@@ -63,7 +63,7 @@ queries=st.selectbox("Select a Query to proceed",[
 
 queries_map={
     "Top 10 vehicle_Number involved in drug-related stops":"""select vehicle_number, count(*) as total_stops from data where drugs_related_stop = 1 group by vehicle_number order by total_stops asc limit 10;""",
-    "Vehicles were most frequently searched":"""select vehicle_number, count(*) as search_count from data where search_conducted = 1 group by vehicle_number order by search_count""",
+    "Vehicles were most frequently searched":"""select vehicle_number, count(*) as search_count from data where search_conducted = 1 group by vehicle_number order by search_count limit 10""",
     "Driver age group had the highest arrest rate":"""select 
                 case 
                     when driver_age between 16 and 25 then '16-25'
@@ -197,4 +197,5 @@ with st.form("new_log_form"):
                     {Search_text}, and the stop {drug_text}.
                     stop duration: **{stop_duration}**.
                     Vehicle Number: **{vehicle_number}**.
+
                     """)
