@@ -155,7 +155,7 @@ with st.form("new_log_form"):
     stop_time = st.time_input("stop Time")
     country_name = st.text_input("Country Name")
     driver_gender = st.selectbox("Driver Gender", ['Male','Female'])
-    driver_age = st.number_input("Driver Age", min_value= 16, max_value= 100, value= 27)
+    driver_age = st.number_input("Driver Age", min_value= 16, max_value= 90, value= 27)
     driver_race = st.text_input("Driver Race")
     search_conducted = st.selectbox("Was a Search Conducted?", ["0","1"])
     search_type = st.text_input("Search Type")
@@ -193,9 +193,10 @@ with st.form("new_log_form"):
                     - **Predicted Violation:** {predicted_violation}
                     - **Predicted Stop Outcome:** {predicted_outcome}
                     
-                    🚓 A  **{driver_age}**-year-old 🧍‍♂️ **{driver_gender}** driver in 🌎 **{ country_name}** was stopped at 🕒**{stop_time.strftime('%I:%M%p')}** on 📅**{stop_date}**. 
+                     A  **{driver_age}**-year-old  **{driver_gender}** driver in  **{ country_name}** was stopped at **{stop_time.strftime('%I:%M%p')}** on **{stop_date}**. 
                     {Search_text}, and the stop {drug_text}.
                     stop duration: **{stop_duration}**.
                     Vehicle Number: **{vehicle_number}**.
 
                     """)
+
