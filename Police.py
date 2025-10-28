@@ -155,7 +155,7 @@ with st.form("new_log_form"):
     stop_time = st.time_input("stop Time")
     country_name = st.text_input("Country Name")
     driver_gender = st.selectbox("Driver Gender", ['Male','Female'])
-    driver_age = st.number_input("Driver Age", min_value= 16, max_value= 90, value= 27)
+    driver_age = st.number_input("Driver Age", min_value= 16, max_value= 90, value= 25)
     driver_race = st.text_input("Driver Race")
     search_conducted = st.selectbox("Was a Search Conducted?", ["0","1"])
     search_type = st.text_input("Search Type")
@@ -199,6 +199,7 @@ with st.form("new_log_form"):
                     Vehicle Number: **{vehicle_number}**.
 
                     """)
+
 
 
 
