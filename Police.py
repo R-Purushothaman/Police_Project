@@ -81,7 +81,7 @@ queries_map={
             order by arrest_rate_percent desc;""",
     "Gender distribution of drivers stopped in each country":"""select country_name, driver_gender, count(*) as stop_count from data group by country_name, driver_gender order by country_name, driver_gender;""",
     "Which race and gender combination has the highest search rate":"""select driver_race, driver_gender, sum(search_conducted = 1) as search_count,
-      round(sum(search_conducted = 1) / count(*) * 100, 2) as search_rate from data group by driver_race, driver_gender order by search_rate desc;""",
+             round(sum(search_conducted = 1) / count(*) * 100, 2) as search_rate from data group by driver_race, driver_gender order by search_rate desc;""",
     "What time of day sees the most traffic stops":"""select hour(stop_time) AS hour, count(*) AS stop_count from data group by hour(stop_time) order by stop_count desc;""",
     "What is the average stop duration for different violations":"""select violation, avg(stop_duration) as avg_stop_duration from data group by violation order by avg_stop_duration desc;""",
     "Are stops during the night more likely to lead to arrests":"""select 
@@ -123,8 +123,8 @@ queries_map={
             count(*) as total_stops
             from data group by year(stop_date), month(stop_date), hour(stop_time) order by year, month, hour;""",
     "Violations with High Search and Arrest Rates":"""select violation, count(*) as total_stops, sum(search_conducted = 1) as total_searches, sum(is_arrested = 1) as total_arrests,
-            round(sum(search_conducted = 1) * 100.0 / count(*), 2) as search_rate, round(sum(is_arrested = 1) * 100.0 / count(*), 2) as arrest_rate, round(count(*) * 100.0 / sum(count(*)) over (partition by country_name),2
-            ) AS partition_of_stops from data group by violation order by search_rate desc, arrest_rate desc;""",
+            round(sum(search_conducted = 1) * 100.0 / count(*), 2) as search_rate, round(sum(is_arrested = 1) * 100.0 / count(*), 2) as arrest_rate,  rank() over (order by sum(case when search_conducted = 1 then 1 else 0 end) * 1.0 / count(*) desc) as search_ranking,
+            rank() over (order by sum(case when is_arrested = 1 then 1 else 0 end) * 1.0 / count(*) desc) as arrest_ranking from data group by violation order by search_rate desc, arrest_rate desc;""",
     "Driver Demographics by Country":"""select country_name, round(avg(driver_age), 1) as avg_driver_age,
             sum(case when driver_gender = 'M' then 1 else 0 end) as male_count,
             sum(case when driver_gender = 'F' then 1 else 0 end) as female_count,           
@@ -134,7 +134,7 @@ queries_map={
             sum(case when driver_race = 'Asian' then 1 else 0 end) as asian_count
          from data group by country_name order by country_name;""",
     "Top 5 Violations with Highest Arrest Rates":"""select violation, count(*) as total_stops, sum(case when is_arrested = True then 1 else 0 end) as total_arrests,
-        round(sum(case when is_arrested = True then 1 else 0 end) * 100.0 / count(*), 2) as arrest_rate from data group by violation order by arrest_rate desc limit 5;"""
+          round(sum(case when is_arrested = True then 1 else 0 end) * 100.0 / count(*), 2) as arrest_rate from data group by violation order by arrest_rate desc limit 5;"""
 
 }
 
@@ -199,5 +199,6 @@ with st.form("new_log_form"):
                     Vehicle Number: **{vehicle_number}**.
 
                     """)
+
 
 
